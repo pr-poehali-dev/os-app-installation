@@ -55,30 +55,32 @@ export default function AppStore({ onInstall, onUninstall, installedApps }: AppS
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto space-y-3">
+      <div className="flex-1 overflow-auto space-y-2 md:space-y-3">
         {filteredApps.map((app) => (
-          <Card key={app.id} className="p-4 bg-white/5 border-white/10 hover:bg-white/10 transition-colors">
-            <div className="flex items-start gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
-                <Icon name={app.icon} size={28} className="text-white" />
+          <Card key={app.id} className="p-3 md:p-4 bg-white/5 border-white/10 hover:bg-white/10 active:bg-white/15 transition-colors">
+            <div className="flex items-start gap-3 md:gap-4">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
+                <Icon name={app.icon} size={24} className="md:w-7 md:h-7 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-lg">{app.name}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{app.description}</p>
-                <p className="text-xs text-muted-foreground mt-2">{app.size}</p>
+                <h3 className="font-semibold text-base md:text-lg">{app.name}</h3>
+                <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">{app.description}</p>
+                <p className="text-xs text-muted-foreground mt-1 md:mt-2">{app.size}</p>
               </div>
               {app.installed ? (
                 <Button
                   onClick={() => onUninstall(app.id)}
                   variant="outline"
-                  className="bg-white/5 border-white/10 hover:bg-red-500/20"
+                  size="sm"
+                  className="bg-white/5 border-white/10 hover:bg-red-500/20 active:scale-95 flex-shrink-0 text-xs md:text-sm"
                 >
                   Удалить
                 </Button>
               ) : (
                 <Button
                   onClick={() => onInstall(app)}
-                  className="bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                  size="sm"
+                  className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 active:scale-95 flex-shrink-0 text-xs md:text-sm"
                 >
                   Установить
                 </Button>

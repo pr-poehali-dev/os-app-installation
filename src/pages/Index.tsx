@@ -154,22 +154,22 @@ export default function Index() {
     <div className="h-screen w-screen overflow-hidden relative bg-gradient-to-br from-[#1A1F2C] via-[#2D1B4E] to-[#1A1F2C]">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMDMpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40" />
 
-      <div className="absolute top-8 left-8 grid grid-cols-4 gap-6">
+      <div className="absolute top-4 md:top-8 left-4 md:left-8 right-4 md:right-auto grid grid-cols-4 md:grid-cols-4 gap-3 md:gap-6 pb-20 md:pb-0">
         {desktopApps.map((app) => (
           <button
             key={app.id}
             onClick={() => handleOpenWindow(app.id, app.name, app.icon, app.id)}
-            className="flex flex-col items-center gap-2 p-4 rounded-2xl hover:bg-white/10 transition-all group"
+            className="flex flex-col items-center gap-1 md:gap-2 p-2 md:p-4 rounded-xl md:rounded-2xl hover:bg-white/10 active:scale-95 transition-all group"
           >
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-              <Icon name={app.icon} size={32} className="text-white" />
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <Icon name={app.icon} size={24} className="md:w-8 md:h-8 text-white" />
             </div>
-            <span className="text-sm font-medium text-center">{app.name}</span>
+            <span className="text-xs md:text-sm font-medium text-center truncate max-w-full">{app.name}</span>
           </button>
         ))}
       </div>
 
-      {openWindows.filter(w => !w.isMinimized).map((window) => (
+      {openWindows.map((window) => (
         <Window
           key={window.id}
           id={window.id}

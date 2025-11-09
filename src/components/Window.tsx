@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { Card } from '@/components/ui/card';
 
@@ -14,11 +14,19 @@ interface WindowProps {
 }
 
 export default function Window({ id, title, icon, children, onClose, onMinimize, isActive, onClick }: WindowProps) {
+  const [isMobile, setIsMobile] = useState(false);
   const [position, setPosition] = useState({ x: Math.random() * 200 + 100, y: Math.random() * 100 + 50 });
   const [size, setSize] = useState({ width: 800, height: 600 });
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('.window-controls')) return;
@@ -47,7 +55,7 @@ export default function Window({ id, title, icon, children, onClose, onMinimize,
     setIsResizing(false);
   };
 
-  useState(() => {
+  useEffect(() => {
     if (isDragging || isResizing) {
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseup', handleMouseUp);
@@ -56,7 +64,33 @@ export default function Window({ id, title, icon, children, onClose, onMinimize,
         window.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  });
+  }, [isDragging, isResizing]);
+
+  if (isMobile) {
+    return (
+      <div className={`fixed inset-0 ${isActive ? 'z-50' : 'hidden'} animate-fade-in`}>
+        <Card className="h-full flex flex-col overflow-hidden backdrop-blur-xl bg-white/10 border-white/20 shadow-2xl rounded-none">
+          <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10">
+            <div className="flex items-center gap-2">
+              <Icon name={icon} size={20} className="text-primary" />
+              <span className="font-medium text-sm">{title}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={onClose}
+                className="w-10 h-10 rounded-lg hover:bg-red-500/20 flex items-center justify-center transition-colors active:scale-95"
+              >
+                <Icon name="X" size={20} />
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 overflow-auto p-4 bg-black/20">
+            {children}
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div
